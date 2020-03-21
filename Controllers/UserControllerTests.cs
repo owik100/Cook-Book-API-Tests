@@ -28,14 +28,14 @@ namespace Cook_Book_API_Tests.Controllers
 
             using (var context = new ApplicationDbContext(options))
             {
-                var user = new ApplicationUser()
+                var user = new ApplicationUser
                 {
                     Id = "User1",                  
                     UserName = "Jan",
                     Email = "User1@email.com",
                 };
 
-                var user2 = new ApplicationUser()
+                var user2 = new ApplicationUser
                 {
                     Id = "User2",
                     UserName = "Krzysztof",
