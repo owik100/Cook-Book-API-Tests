@@ -24,8 +24,8 @@ namespace Cook_Book_API_Tests.Controllers
 
         private List<IdentityUser> _users = new List<IdentityUser>
         {
-          new ApplicationUser { Id = "1",UserName="User1", Email ="user1@bv.com" },
-          new ApplicationUser { Id = "2" ,UserName="User2", Email ="user2@bv.com"}
+          new ApplicationUser { Id = "1",UserName="User1", Email ="user1@gmail" },
+          new ApplicationUser { Id = "2" ,UserName="User2", Email ="user1@gmail"}
         };
 
         public AccountControllerTests()
@@ -52,7 +52,7 @@ namespace Cook_Book_API_Tests.Controllers
         }
 
         [Fact]
-        public async Task CreateAUser()
+        public async Task IsAccountControllerCreateUser()
         {
             RegisterModel registerModel = new RegisterModel
             {
