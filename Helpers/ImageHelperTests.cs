@@ -12,7 +12,7 @@ using Xunit;
 
 namespace Cook_Book_API_Tests.Helpers
 {
-    public class ImageHelperTest
+    public class ImageHelperTests
     {
         private readonly ImageHelper _imageHelper;
 
@@ -20,7 +20,7 @@ namespace Cook_Book_API_Tests.Helpers
         private readonly IConfiguration _configuration;
         private readonly ILogger<ImageHelper> _logger;
 
-        public ImageHelperTest()
+        public ImageHelperTests()
         {
             //Arrange
              _configuration = new ConfigurationBuilder()
