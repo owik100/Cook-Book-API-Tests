@@ -23,7 +23,7 @@ namespace Cook_Book_API_Tests.Controllers
         {
             //Arrange
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-               .UseInMemoryDatabase(databaseName: "ApplicationDbContextTest")
+               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                .Options;
 
             using (var context = new ApplicationDbContext(options))
