@@ -148,41 +148,6 @@ namespace Cook_Book_API_Tests.Controllers
             Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.Result.ToString());
         }
 
-        [Fact]
-        public void IsRecipesControllerPostRecipesWithImage()
-        {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "Hello World from a Fake File";
-            var fileName = "salatka.jpeg";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
-            fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
-
-            var file = fileMock.Object;
-
-            RecipeAPIModel recipeAPIModel = new RecipeAPIModel
-            {
-                Name = "Sałatka",
-                Ingredients = new List<string> { "Sałata" },
-                Instruction = "Pokrój sałatę.",
-                Image = file
-            };
-
-            //Act
-            var result = _recipesController.PostRecipes(recipeAPIModel);
-
-            //Assert
-            Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result. Result.Result.ToString());
-        }
-
         //Nie było zdjęcia - nie wysyłamy zdjęcia
         [Fact]
         public void IsRecipesControllerPutRecipesWithoutOldNewImage()
@@ -203,101 +168,14 @@ namespace Cook_Book_API_Tests.Controllers
             }
 
             //Act
-            var result = _recipesController.PutRecipes(1,recipeAPIModel);
-
-            //Assert
-            Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
-        }
-
-        //Jest zdjęcie - nie wysyłamy zdjęcie
-        [Fact]
-        public void IsRecipesControllerPutRecipesWithoutNewImage()
-        {
-            //Arrange
-            RecipeAPIModel recipeAPIModel = new RecipeAPIModel
-            {
-                RecipeId = "2",
-                Name = "HerbataEDIT",
-                Ingredients = new List<string> { "Woda", "Herbata" },
-                Instruction = "Zagotuj wodę. Włóż esencję herbaty.",
-            };
-
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "Hello World from a Fake File";
-            var fileName = "salatka.jpeg";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
-            fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
-
-            var file = fileMock.Object;
-
-            //Stworz plik na potrzeby symulacji posiadania starego pliku
-            using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + @"\deleteMe.jpeg", FileMode.Create))
-            {
-                file.CopyTo(fileStream);
-            }
-
-            //Act
-            var result = _recipesController.PutRecipes(2, recipeAPIModel);
-
-            //Assert
-            Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
-        }
-
-        //Jest zdjęcie - Wysyłamy Zdjęcie
-        [Fact]
-        public void IsRecipesControllerPutRecipesWithOldNewImage()
-        {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "Hello World from a Fake File";
-            var fileName = "PysznaHerbata.jpeg";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
-            fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
-
-            var file = fileMock.Object;
-
-            //Stworz plik na potrzeby symulacji usuniecia starego pliku i zapisu nowego
-            using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + @"\deleteMe.jpeg", FileMode.Create))
-            {
-                 file.CopyTo(fileStream);
-            }
-
-            RecipeAPIModel recipeAPIModel = new RecipeAPIModel
-            {
-                RecipeId = "2",
-                Name = "HerbataEDIT",
-                Ingredients = new List<string> { "Woda", "Herbata" },
-                Instruction = "Zagotuj wodę. Włóż esencję herbaty.",
-                NameOfImage = "PysznaHerbata.jpeg",
-                Image = file
-            };
-
-            //Act
-            var result = _recipesController.PutRecipes(2, recipeAPIModel);
+            var result = _recipesController.PutRecipes(1, recipeAPIModel);
 
             //Assert
             Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
         }
 
         [Fact]
-        public void IsRecipesControllerDeleteRecipeWithoutImage()
+        public void IsRecipesControllerDeleteRecipe()
         {
             //Act
             var result = _recipesController.DeleteRecipes(1);
@@ -306,38 +184,7 @@ namespace Cook_Book_API_Tests.Controllers
             Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
         }
 
-        [Fact]
-        public void IsRecipesControllerDeleteRecipeWithImage()
-        {
-            //Arrange
-            var fileMock = new Mock<IFormFile>();
-            //Setup mock file using a memory stream
-            var content = "Hello World from a Fake File";
-            var fileName = "PysznaHerbata.jpeg";
-            var ms = new MemoryStream();
-            var writer = new StreamWriter(ms);
-            writer.Write(content);
-            writer.Flush();
-            ms.Position = 0;
-            fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
-            fileMock.Setup(x => x.FileName).Returns(fileName);
-            fileMock.Setup(x => x.Length).Returns(ms.Length);
-            fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
-
-            var file = fileMock.Object;
-
-            //Stworz plik na potrzeby symulacji usuniecia starego pliku
-            using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + @"\deleteMe.jpeg", FileMode.Create))
-            {
-                file.CopyTo(fileStream);
-            }
-
-            //Act
-            var result = _recipesController.DeleteRecipes(2);
-
-            //Assert
-            Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
-        }
+       
 
         [Fact]
         public void IsRecipesControllerGetPhoto()
@@ -371,5 +218,164 @@ namespace Cook_Book_API_Tests.Controllers
             //Assert
             Assert.Equal("Microsoft.AspNetCore.Mvc.FileStreamResult", result.ToString());
         }
+
+        #region Unused
+
+
+        ////Jest zdjęcie - nie wysyłamy zdjęcie
+        //[Fact]
+        //public void IsRecipesControllerPutRecipesWithoutNewImage()
+        //{
+        //    //Arrange
+        //    RecipeAPIModel recipeAPIModel = new RecipeAPIModel
+        //    {
+        //        RecipeId = "2",
+        //        Name = "HerbataEDIT",
+        //        Ingredients = new List<string> { "Woda", "Herbata" },
+        //        Instruction = "Zagotuj wodę. Włóż esencję herbaty.",
+        //    };
+
+        //    //Arrange
+        //    var fileMock = new Mock<IFormFile>();
+        //    //Setup mock file using a memory stream
+        //    var content = "Hello World from a Fake File";
+        //    var fileName = "salatka.jpeg";
+        //    var ms = new MemoryStream();
+        //    var writer = new StreamWriter(ms);
+        //    writer.Write(content);
+        //    writer.Flush();
+        //    ms.Position = 0;
+        //    fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+        //    fileMock.Setup(x => x.FileName).Returns(fileName);
+        //    fileMock.Setup(x => x.Length).Returns(ms.Length);
+        //    fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
+
+        //    var file = fileMock.Object;
+
+        //    //Stworz plik na potrzeby symulacji posiadania starego pliku
+        //    using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + @"\deleteMe.jpeg", FileMode.Create))
+        //    {
+        //        file.CopyTo(fileStream);
+        //    }
+
+        //    //Act
+        //    var result = _recipesController.PutRecipes(2, recipeAPIModel);
+
+        //    //Assert
+        //    Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
+        //}
+
+        ////Jest zdjęcie - Wysyłamy Zdjęcie
+        //[Fact]
+        //public void IsRecipesControllerPutRecipesWithOldNewImage()
+        //{
+        //    //Arrange
+        //    var fileMock = new Mock<IFormFile>();
+        //    //Setup mock file using a memory stream
+        //    var content = "Hello World from a Fake File";
+        //    var fileName = "PysznaHerbata.jpeg";
+        //    var ms = new MemoryStream();
+        //    var writer = new StreamWriter(ms);
+        //    writer.Write(content);
+        //    writer.Flush();
+        //    ms.Position = 0;
+        //    fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+        //    fileMock.Setup(x => x.FileName).Returns(fileName);
+        //    fileMock.Setup(x => x.Length).Returns(ms.Length);
+        //    fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
+
+        //    var file = fileMock.Object;
+
+        //    //Stworz plik na potrzeby symulacji usuniecia starego pliku i zapisu nowego
+        //    using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + @"\deleteMe.jpeg", FileMode.Create))
+        //    {
+        //        file.CopyTo(fileStream);
+        //    }
+
+        //    RecipeAPIModel recipeAPIModel = new RecipeAPIModel
+        //    {
+        //        RecipeId = "2",
+        //        Name = "HerbataEDIT",
+        //        Ingredients = new List<string> { "Woda", "Herbata" },
+        //        Instruction = "Zagotuj wodę. Włóż esencję herbaty.",
+        //        NameOfImage = "PysznaHerbata.jpeg",
+        //        Image = file
+        //    };
+
+        //    //Act
+        //    var result = _recipesController.PutRecipes(2, recipeAPIModel);
+
+        //    //Assert
+        //    Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
+        //}
+
+        //[Fact]
+        //public void IsRecipesControllerDeleteRecipeWithImage()
+        //{
+        //    //Arrange
+        //    var fileMock = new Mock<IFormFile>();
+        //    //Setup mock file using a memory stream
+        //    var content = "Hello World from a Fake File";
+        //    var fileName = "PysznaHerbata.jpeg";
+        //    var ms = new MemoryStream();
+        //    var writer = new StreamWriter(ms);
+        //    writer.Write(content);
+        //    writer.Flush();
+        //    ms.Position = 0;
+        //    fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+        //    fileMock.Setup(x => x.FileName).Returns(fileName);
+        //    fileMock.Setup(x => x.Length).Returns(ms.Length);
+        //    fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
+
+        //    var file = fileMock.Object;
+
+        //    //Stworz plik na potrzeby symulacji usuniecia starego pliku
+        //    using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + @"\deleteMe.jpeg", FileMode.Create))
+        //    {
+        //        file.CopyTo(fileStream);
+        //    }
+
+        //    //Act
+        //    var result = _recipesController.DeleteRecipes(2);
+
+        //    //Assert
+        //    Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
+        //}
+
+        //[Fact]
+        //public void IsRecipesControllerPostRecipesWithImage()
+        //{
+        //    //Arrange
+        //    var fileMock = new Mock<IFormFile>();
+        //    //Setup mock file using a memory stream
+        //    var content = "Hello World from a Fake File";
+        //    var fileName = "salatka.jpeg";
+        //    var ms = new MemoryStream();
+        //    var writer = new StreamWriter(ms);
+        //    writer.Write(content);
+        //    writer.Flush();
+        //    ms.Position = 0;
+        //    fileMock.Setup(x => x.OpenReadStream()).Returns(ms);
+        //    fileMock.Setup(x => x.FileName).Returns(fileName);
+        //    fileMock.Setup(x => x.Length).Returns(ms.Length);
+        //    fileMock.Setup(x => x.CopyToAsync(It.IsAny<Stream>(), CancellationToken.None)).Returns(Task.CompletedTask);
+
+        //    var file = fileMock.Object;
+
+        //    RecipeAPIModel recipeAPIModel = new RecipeAPIModel
+        //    {
+        //        Name = "Sałatka",
+        //        Ingredients = new List<string> { "Sałata" },
+        //        Instruction = "Pokrój sałatę.",
+        //        Image = file
+        //    };
+
+        //    //Act
+        //    var result = _recipesController.PostRecipes(recipeAPIModel);
+
+        //    //Assert
+        //    Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.Result.ToString());
+        //}
+        #endregion
     }
 }
