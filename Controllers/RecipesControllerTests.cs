@@ -115,6 +115,19 @@ namespace Cook_Book_API_Tests.Controllers
         }
 
         [Fact]
+        public void IsRecipesControllerReturnsGetRecipesById()
+        {
+            //Act
+            var result = _recipesController.GetRecipes(1);
+
+            //Assert
+            Assert.Equal(1, result.Result.Value.RecipeId);
+            Assert.Equal("Kanapka", result.Result.Value.Name);
+            Assert.Equal(2, result.Result.Value.Ingredients.ToList().Count());
+
+        }
+
+        [Fact]
         public void IsRecipesControllerReturnsGetUserRecipes()
         {
             //Act
