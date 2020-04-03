@@ -121,7 +121,7 @@ namespace Cook_Book_API_Tests.Controllers
             var result = _recipesController.GetRecipes(1);
 
             //Assert
-            Assert.Equal(1, result.Result.Value.RecipeId);
+            Assert.Equal("1", result.Result.Value.RecipeId);
             Assert.Equal("Kanapka", result.Result.Value.Name);
             Assert.Equal(2, result.Result.Value.Ingredients.ToList().Count());
 
