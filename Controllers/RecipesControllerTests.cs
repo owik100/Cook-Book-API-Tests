@@ -65,7 +65,8 @@ namespace Cook_Book_API_Tests.Controllers
                     Name = "Kanapka",
                     Ingredients = new List<string> { "Chleb", "Masło" },
                     Instruction = "Posmaruj chleb masłem. Smacznego!",
-                    UserId = "User1"
+                    UserId = "User1",
+                    IsPublic = false,
                     },
                     new Recipe
                     {
@@ -74,7 +75,8 @@ namespace Cook_Book_API_Tests.Controllers
                     Ingredients = new List<string> { "Woda", "Herbata" },
                     Instruction = "Zagotuj wodę. Włóż esencję herbaty.",
                     NameOfImage = "herbata.jpeg",
-                    UserId = "User1"
+                    UserId = "User1",
+                      IsPublic = false,
                     },
                     new Recipe
                     {
@@ -83,7 +85,8 @@ namespace Cook_Book_API_Tests.Controllers
                     Ingredients = new List<string> { "Woda", "Ziemniaki" },
                     Instruction = "Ugotuj ziemniaki w wodzie.",
                     NameOfImage = "pyszna_zupa.jpeg",
-                    UserId = "User2"
+                    UserId = "User2",
+                      IsPublic = false,
                     },
                     new Recipe
                     {
@@ -92,7 +95,8 @@ namespace Cook_Book_API_Tests.Controllers
                     Ingredients = new List<string> { "Ziemniaki", "Sól", "Olej" },
                     Instruction = "Pokrój i usmaż ziemniaki. Posól.",
                     NameOfImage = "frytki.jpeg",
-                    UserId = "User2"
+                    UserId = "User2",
+                      IsPublic = true,
                     }
                 };
 
@@ -140,6 +144,20 @@ namespace Cook_Book_API_Tests.Controllers
             Assert.Equal("herbata.jpeg", result.Value[1].NameOfImage);
             Assert.Equal(2, result.Value[1].Ingredients.ToList().Count());
 
+        }
+
+        [Fact]
+        public void IsRecipesControllerReturnsGetPublicRecipes()
+        {
+            //Act
+            var result = _recipesController.GetPublicRecipes();
+
+            //Assert
+            Assert.Equal(1, result.Value.Count);
+            Assert.Equal("Frytki", result.Value[0].Name);
+            Assert.Equal("Pokrój i usmaż ziemniaki. Posól.", result.Value[0].Instruction);
+            Assert.Equal("frytki.jpeg", result.Value[0].NameOfImage);
+            Assert.Equal(3, result.Value[0].Ingredients.ToList().Count());
         }
 
 
