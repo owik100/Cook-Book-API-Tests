@@ -1,4 +1,6 @@
-﻿using Cook_Book_API.Controllers;
+﻿using AutoMapper;
+using Cook_Book_API;
+using Cook_Book_API.Controllers;
 using Cook_Book_API.Data;
 using Cook_Book_API.Data.DbModels;
 using Cook_Book_API.Models;
@@ -53,8 +55,17 @@ namespace Cook_Book_API_Tests.Controllers
             }, "mock"));
 
 
+            var config = new MapperConfiguration(opts =>
+            {
+                opts.AddProfile(new MappingProfile());
+
+            });
+
+            var mapper = config.CreateMapper(); // Use this mapper to instantiate your class
+
+
             _logger = new Microsoft.Extensions.Logging.Abstractions.NullLogger<UserController>();
-            _userController = new UserController(new ApplicationDbContext(options), _logger);
+            _userController = new UserController(new ApplicationDbContext(options), _logger, mapper);
 
             _userController.ControllerContext = new ControllerContext()
             {

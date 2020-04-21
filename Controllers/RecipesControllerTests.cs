@@ -1,4 +1,6 @@
-﻿using Cook_Book_API.Controllers;
+﻿using AutoMapper;
+using Cook_Book_API;
+using Cook_Book_API.Controllers;
 using Cook_Book_API.Data;
 using Cook_Book_API.Data.DbModels;
 using Cook_Book_API.Interfaces;
@@ -110,7 +112,15 @@ namespace Cook_Book_API_Tests.Controllers
                  new Claim(ClaimTypes.NameIdentifier, "User1"),
            }, "mock"));
 
-            _recipesController = new RecipesController(new ApplicationDbContext(options), _logger, _imageHelper.Object);
+            var config = new MapperConfiguration(opts =>
+            {
+                opts.AddProfile(new MappingProfile());
+
+            });
+
+            var mapper = config.CreateMapper(); // Use this mapper to instantiate your class
+
+            _recipesController = new RecipesController(new ApplicationDbContext(options), _logger, _imageHelper.Object, mapper);
 
             _recipesController.ControllerContext = new ControllerContext()
             {
@@ -122,7 +132,7 @@ namespace Cook_Book_API_Tests.Controllers
         public void IsRecipesControllerReturnsGetRecipesById()
         {
             //Act
-            var result = _recipesController.GetRecipes(1);
+            var result = _recipesController.GetRecipe(1);
 
             //Assert
             Assert.Equal("1", result.Result.Value.RecipeId);
