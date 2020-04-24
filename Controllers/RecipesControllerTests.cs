@@ -163,7 +163,7 @@ namespace Cook_Book_API_Tests.Controllers
             var result = _recipesController.GetPublicRecipes();
 
             //Assert
-            Assert.Equal(1, result.Value.Count);
+            Assert.Single(result.Value);
             Assert.Equal("Frytki", result.Value[0].Name);
             Assert.Equal("Pokrój i usmaż ziemniaki. Posól.", result.Value[0].Instruction);
             Assert.Equal("frytki.jpeg", result.Value[0].NameOfImage);
@@ -175,7 +175,7 @@ namespace Cook_Book_API_Tests.Controllers
         public void IsRecipesControllerPostRecipesWithoutImage()
         {
             //Arrange
-            RecipeAPIModel recipeAPIModel = new RecipeAPIModel
+            RecipeModel recipeAPIModel = new RecipeModel
             {
                 Name = "Sałatka",
                 Ingredients = new List<string> { "Sałata" },
@@ -194,7 +194,7 @@ namespace Cook_Book_API_Tests.Controllers
         public void IsRecipesControllerPutRecipesWithoutOldNewImage()
         {
             //Arrange
-            RecipeAPIModel recipeAPIModel = new RecipeAPIModel
+            RecipeModel recipeAPIModel = new RecipeModel
             {
                 RecipeId = "1",
                 Name = "KanapkaEDIT",
