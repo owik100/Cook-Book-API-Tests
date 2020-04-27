@@ -48,5 +48,23 @@ namespace Cook_Book_API_Tests.Helpers
             //Assert
             Assert.Equal(expected, result);
         }
+
+        [InlineData(".exe")]
+        [InlineData(".gif")]
+        [InlineData(".jpeg")]
+        [Theory]
+        public void IsImageHelperCheckCorrectImageExtension(string extension)
+        {
+            //Arrange
+            bool expected = true;
+            if (extension == ".exe")
+                expected = false;
+
+            //Act
+            bool result = _imageHelper.CheckCorrectExtension(extension);
+
+            //Assert
+            Assert.Equal(expected, result);
+        }
     }
 }
