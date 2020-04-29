@@ -85,5 +85,27 @@ namespace Cook_Book_API_Tests.Controllers
             Assert.Equal(userName, result.UserName);
             Assert.Equal(Email, result.Email);
         }
+
+
+        [InlineData("User1")]
+        [Theory]
+        public void IsUserControllerUpdateUser(string userID)
+        {
+            //Arrange
+            LoggedUserModel loggedUserModel = new LoggedUserModel
+            {
+                Id = "User1",
+                Email = "User1@email.com",
+                UserName = "Jan",
+                FavouriteRecipes = new List<string> { "100", "101" }
+            };
+
+            //Act
+            var result = _userController.PutUser(userID, loggedUserModel);
+
+            //Assert
+
+            Assert.Equal("Microsoft.AspNetCore.Mvc.OkResult", result.Result.ToString());
+        }
     }
 }
